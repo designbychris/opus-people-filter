@@ -1,0 +1,114 @@
+/*
+ * Client People Filter
+ * Base styles are intentionally restrained so the control can be styled
+ * to match the client's Elementor design.
+ */
+
+.cpf {
+    width: 100%;
+}
+
+.cpf__form {
+    display: grid;
+    gap: 1.25rem;
+}
+
+.cpf__search {
+    display: flex;
+    gap: .75rem;
+    align-items: stretch;
+}
+
+.cpf__search-input {
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.cpf__submit,
+.cpf__reset,
+.cpf__letter {
+    transition: opacity .2s ease, transform .2s ease;
+}
+
+.cpf__submit:hover,
+.cpf__reset:hover,
+.cpf__letter:hover {
+    opacity: .78;
+}
+
+.cpf__alphabet {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .35rem;
+}
+
+.cpf__letter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.25rem;
+    min-height: 2.25rem;
+    text-decoration: none;
+}
+
+.cpf__letter.is-active {
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: .2em;
+}
+
+.cpf__selects {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    gap: 1rem;
+}
+
+.cpf__field {
+    display: grid;
+    gap: .4rem;
+}
+
+.cpf__field-label {
+    font-weight: 600;
+}
+
+.cpf__select {
+    width: 100%;
+}
+
+.cpf__actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.cpf__intro {
+    margin-top: 1.5rem;
+}
+
+/*
+ * Add the CSS class "cpf-people-results" to the Elementor Loop Grid widget.
+ * This prevents even the empty widget shell appearing before a filter is used.
+ */
+body.cpf-filter-inactive .cpf-people-results {
+    display: none !important;
+}
+
+body.cpf-filter-active .cpf-people-results {
+    display: block;
+}
+
+@media (max-width: 767px) {
+    .cpf__search {
+        flex-direction: column;
+    }
+
+    .cpf__alphabet {
+        gap: .25rem;
+    }
+
+    .cpf__letter {
+        min-width: 2rem;
+        min-height: 2rem;
+    }
+}

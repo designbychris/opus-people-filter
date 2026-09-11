@@ -1,2 +1,84 @@
-# opus-people-filter
-A Filter for Our People on the Opus Website to work with Elementor Loop Grid
+# Client People Filter
+
+A small WordPress plugin that provides a search-first People directory for an existing Elementor Loop Grid.
+
+## Why
+
+Simply hiding an Elementor Loop Grid with CSS does **not** improve the initial query/render cost.
+
+This plugin hooks Elementor's custom Query ID and returns zero records until the visitor activates a filter.
+
+## Elementor setup
+
+1. Install and activate the plugin.
+2. Add the shortcode:
+
+   `[people_filter]`
+
+3. Edit the existing Elementor Loop Grid.
+4. In the Loop Grid query settings set:
+
+   **Query ID:** `client_people_filter`
+
+5. In Advanced → CSS Classes add:
+
+   `cpf-people-results`
+
+The initial page load will now return no Loop Grid records.
+
+## Taxonomy filters
+
+Example shortcode:
+
+`[people_filter taxonomies="person_location,person_department,person_role" labels="Location,Department,Role"]`
+
+Then tell the query layer which taxonomies are allowed:
+
+```php
+add_filter('cpf/filter_taxonomies', function () {
+    return [
+        'person_location',
+        'person_department',
+        'person_role',
+    ];
+});
+```
+
+This can live in the theme, a small site plugin, or eventually in a plugin settings screen.
+
+## A-Z surname filtering
+
+For reliable surname filtering, store the surname initial in post meta:
+
+`_people_sort_letter = S`
+
+You can change the meta key:
+
+```php
+add_filter('cpf/letter_meta_key', function () {
+    return 'your_existing_meta_key';
+});
+```
+
+## Current Phase
+
+0.1.0 provides:
+
+- Elementor Loop Grid Query ID integration.
+- Zero-result initial query.
+- Keyword search.
+- A-Z filtering.
+- Optional taxonomy filters.
+- Reset link.
+- URL persistence / bookmarkable filtered states.
+- Automatic select submission.
+- CSS hook to hide the result widget until filtering starts.
+
+## Next logical phase
+
+- Client-specific CPT / ACF mapping.
+- Automatic surname/sort-letter synchronization.
+- AJAX results refresh without a full page reload.
+- Loading / empty states.
+- Optional settings screen for mapping post type, taxonomies and surname field.
+- Automated PHPUnit coverage.
