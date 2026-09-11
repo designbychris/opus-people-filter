@@ -143,3 +143,9 @@ body.cpf-filter-active .cpf-people-results {
         transition: none;
     }
 }
+
+
+/* Phase I.2.1 — Stable Filter Bar */
+.cpf [hidden] {
+    display: none !important;
+}

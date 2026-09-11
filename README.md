@@ -113,3 +113,12 @@ Client data-mapping update:
 - Updates the URL after each filter without a full page reload.
 - Reuses the existing Elementor Loop Grid rendering rather than rebuilding the card template.
 - Adds accessible loading/result announcements and reduced-motion support.
+
+
+## 0.1.3 — Stable Filter Bar
+
+- Fixes taxonomy dropdowns disappearing after an A-Z AJAX request.
+- Keeps the filter form DOM permanently in place; only Elementor results are replaced.
+- Alphabet filtering now preserves currently selected taxonomy filters.
+- Browser Back/Forward synchronizes the visible filter controls to the URL.
+- Reset is available dynamically without rebuilding the filter form.

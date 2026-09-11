@@ -2,7 +2,7 @@
 /**
  * Plugin Name: People Filter
  * Description: Search-first filtering for an Elementor Loop Grid. Prevents the People query from loading until a filter is activated.
- * Version: 0.1.2
+ * Version: 0.1.3
  * Author: Chris Mitchell
  * Text Domain: people-filter
  * Requires PHP: 8.0
@@ -10,7 +10,7 @@
 
 defined('ABSPATH') || exit;
 
-define('CPF_VERSION', '0.1.2');
+define('CPF_VERSION', '0.1.3');
 define('CPF_FILE', __FILE__);
 define('CPF_PATH', plugin_dir_path(__FILE__));
 define('CPF_URL', plugin_dir_url(__FILE__));

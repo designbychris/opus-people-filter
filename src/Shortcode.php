@@ -99,11 +99,14 @@ final class Shortcode
                         </button>
                     <?php endif; ?>
 
-                    <?php if (FilterState::isActive()) : ?>
-                        <a class="cpf__reset" href="<?php echo esc_url($this->currentUrlWithoutQuery()); ?>">
-                            <?php echo esc_html($atts['reset_label']); ?>
-                        </a>
-                    <?php endif; ?>
+                    <a
+                        class="cpf__reset"
+                        data-cpf-reset
+                        href="<?php echo esc_url($this->currentUrlWithoutQuery()); ?>"
+                        <?php echo FilterState::isActive() ? '' : 'hidden'; ?>
+                    >
+                        <?php echo esc_html($atts['reset_label']); ?>
+                    </a>
                 </div>
             </form>
 
