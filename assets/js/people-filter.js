@@ -37,6 +37,13 @@
         if (root) {
             root.classList.toggle('is-loading', isLoading);
             root.setAttribute('aria-busy', isLoading ? 'true' : 'false');
+
+            var loading = root.querySelector('[data-cpf-loading]');
+
+            if (loading) {
+                loading.hidden = !isLoading;
+                loading.setAttribute('aria-hidden', isLoading ? 'false' : 'true');
+            }
         }
 
         if (results) {
@@ -195,6 +202,16 @@
                 }
 
                 executeElementorFrontend();
+
+                var refreshedResults = getResults();
+
+                if (refreshedResults) {
+                    refreshedResults.classList.remove('cpf-results-ready');
+
+                    window.requestAnimationFrame(function () {
+                        refreshedResults.classList.add('cpf-results-ready');
+                    });
+                }
 
                 announce(getFilterRoot(), 'People results updated.');
             })

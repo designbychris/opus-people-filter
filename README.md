@@ -122,3 +122,19 @@ Client data-mapping update:
 - Alphabet filtering now preserves currently selected taxonomy filters.
 - Browser Back/Forward synchronizes the visible filter controls to the URL.
 - Reset is available dynamically without rebuilding the filter form.
+
+
+## 0.1.4 — Interface & Responsive Polish
+
+- Polishes the full filter interface without changing the query architecture.
+- Adds branded CSS variables for easy client-specific colour changes.
+- Styles search, A-Z controls, dropdowns, buttons and Reset consistently.
+- Adds stronger hover, focus and active states.
+- Adds visible AJAX loading feedback.
+- Adds a subtle results reveal after AJAX refresh.
+- Adds responsive layouts:
+  - 5-column taxonomy layout on desktop
+  - 2-column layout on tablet
+  - single-column filters on mobile
+  - wrapped A-Z controls for smaller screens
+- Adds reduced-motion support.
