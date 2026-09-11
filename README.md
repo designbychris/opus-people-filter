@@ -82,3 +82,18 @@ add_filter('cpf/letter_meta_key', function () {
 - Loading / empty states.
 - Optional settings screen for mapping post type, taxonomies and surname field.
 - Automated PHPUnit coverage.
+
+
+## 0.1.1
+
+Client data-mapping update:
+
+- Adds default filters for:
+  - `staffmember_divisions`
+  - `staffmember_locations`
+  - `staffmember_roles`
+  - `staffmember_specialisms`
+  - `staffmember_sectors`
+  - `accreditations`
+- A-Z filtering now works immediately against the surname-like final word in the post title.
+- A dedicated surname-initial meta field can still override the fallback through `cpf/letter_meta_key`.

@@ -27,8 +27,8 @@ final class Shortcode
     {
         $atts = shortcode_atts(
             [
-                'taxonomies'         => '',
-                'labels'             => '',
+                'taxonomies'         => 'staffmember_divisions,staffmember_locations,staffmember_roles,staffmember_specialisms,staffmember_sectors,accreditations',
+                'labels'             => 'Divisions,Locations,Roles,Specialisms,Sectors,Accreditations',
                 'show_search'        => 'yes',
                 'show_alphabet'      => 'yes',
                 'search_placeholder' => __('Search by name or keyword', 'client-people-filter'),

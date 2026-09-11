@@ -13,6 +13,20 @@ final class PeopleQuery
      */
     private const QUERY_ID = 'client_people_filter';
 
+    /**
+     * Client taxonomy defaults.
+     *
+     * @var string[]
+     */
+    private const DEFAULT_TAXONOMIES = [
+        'staffmember_divisions',
+        'staffmember_locations',
+        'staffmember_roles',
+        'staffmember_specialisms',
+        'staffmember_sectors',
+        'accreditations',
+    ];
+
     public function register(): void
     {
         add_action(
@@ -21,6 +35,14 @@ final class PeopleQuery
             10,
             1
         );
+
+        /**
+         * A-Z fallback for existing staff data.
+         *
+         * This only affects a query when our Elementor query hook has set the
+         * private cpf_surname_letter query variable.
+         */
+        add_filter('posts_where', [$this, 'filterSurnameLetter'], 10, 2);
     }
 
     public function filterElementorQuery(WP_Query $query): void
@@ -47,37 +69,35 @@ final class PeopleQuery
 
         if ($letter !== '') {
             /**
-             * Recommended data model:
+             * If the site has a dedicated surname-initial field, define it
+             * with the cpf/letter_meta_key filter and we will use that.
              *
-             * _people_sort_letter = first letter of surname, e.g. "S"
-             *
-             * Change this key with the filter below if your site already
-             * stores the surname initial elsewhere.
+             * Otherwise we fall back to the last word of post_title, which
+             * works for normal "First Last" staff-member titles.
              */
             $letterMetaKey = (string) apply_filters(
                 'cpf/letter_meta_key',
-                '_people_sort_letter'
+                ''
             );
 
-            $metaQuery   = (array) $query->get('meta_query');
-            $metaQuery[] = [
-                'key'     => $letterMetaKey,
-                'value'   => $letter,
-                'compare' => '=',
-            ];
+            if ($letterMetaKey !== '') {
+                $metaQuery   = (array) $query->get('meta_query');
+                $metaQuery[] = [
+                    'key'     => $letterMetaKey,
+                    'value'   => $letter,
+                    'compare' => '=',
+                ];
 
-            $query->set('meta_query', $metaQuery);
+                $query->set('meta_query', $metaQuery);
+            } else {
+                $query->set('cpf_surname_letter', $letter);
+            }
         }
 
-        /**
-         * Taxonomies are intentionally configurable.
-         *
-         * Example:
-         * add_filter('cpf/filter_taxonomies', function () {
-         *     return ['person_location', 'person_department', 'person_role'];
-         * });
-         */
-        $taxonomies = (array) apply_filters('cpf/filter_taxonomies', []);
+        $taxonomies = (array) apply_filters(
+            'cpf/filter_taxonomies',
+            self::DEFAULT_TAXONOMIES
+        );
 
         if ($taxonomies !== []) {
             $taxQuery = (array) $query->get('tax_query');
@@ -111,9 +131,39 @@ final class PeopleQuery
             }
         }
 
-        /**
-         * Optional hook for client-specific query changes.
-         */
         do_action('cpf/after_elementor_query', $query);
+    }
+
+    /**
+     * Filter by the first letter of the final word in post_title.
+     *
+     * Example:
+     * "Jane Smith" => S
+     *
+     * This gives the existing client site working A-Z filtering without
+     * requiring a migration or a new surname meta field first.
+     */
+    public function filterSurnameLetter(string $where, WP_Query $query): string
+    {
+        $letter = strtoupper(
+            sanitize_text_field(
+                (string) $query->get('cpf_surname_letter')
+            )
+        );
+
+        if (!preg_match('/^[A-Z]$/', $letter)) {
+            return $where;
+        }
+
+        global $wpdb;
+
+        $like = $wpdb->esc_like($letter) . '%';
+
+        $where .= $wpdb->prepare(
+            " AND SUBSTRING_INDEX(TRIM({$wpdb->posts}.post_title), ' ', -1) LIKE %s",
+            $like
+        );
+
+        return $where;
     }
 }
