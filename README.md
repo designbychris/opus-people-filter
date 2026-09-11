@@ -97,3 +97,19 @@ Client data-mapping update:
   - `accreditations`
 - A-Z filtering now works immediately against the surname-like final word in the post title.
 - A dedicated surname-initial meta field can still override the fallback through `cpf/letter_meta_key`.
+
+
+## 0.1.2 — Living Results
+
+- Removes `accreditations` from the default filter controls.
+- Keeps Divisions, Locations, Roles, Specialisms and Sectors.
+- Adds progressive AJAX filtering for:
+  - A-Z links
+  - taxonomy dropdown changes
+  - keyword search
+  - reset
+- Keeps normal GET URLs as the fallback, so filtering still works without JavaScript.
+- Keeps browser back/forward navigation working.
+- Updates the URL after each filter without a full page reload.
+- Reuses the existing Elementor Loop Grid rendering rather than rebuilding the card template.
+- Adds accessible loading/result announcements and reduced-motion support.

@@ -27,8 +27,8 @@ final class Shortcode
     {
         $atts = shortcode_atts(
             [
-                'taxonomies'         => 'staffmember_divisions,staffmember_locations,staffmember_roles,staffmember_specialisms,staffmember_sectors,accreditations',
-                'labels'             => 'Divisions,Locations,Roles,Specialisms,Sectors,Accreditations',
+                'taxonomies'         => 'staffmember_divisions,staffmember_locations,staffmember_roles,staffmember_specialisms,staffmember_sectors',
+                'labels'             => 'Divisions,Locations,Roles,Specialisms,Sectors',
                 'show_search'        => 'yes',
                 'show_alphabet'      => 'yes',
                 'search_placeholder' => __('Search by name or keyword', 'client-people-filter'),
@@ -112,6 +112,13 @@ final class Shortcode
                     <?php echo esc_html($atts['intro_text']); ?>
                 </div>
             <?php endif; ?>
+
+            <div
+                class="cpf__status screen-reader-text"
+                data-cpf-status
+                aria-live="polite"
+                aria-atomic="true"
+            ></div>
         </section>
         <?php
 

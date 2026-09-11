@@ -112,3 +112,34 @@ body.cpf-filter-active .cpf-people-results {
         min-height: 2rem;
     }
 }
+
+
+/* Phase I.2 — Living Results */
+.cpf,
+.cpf-people-results {
+    transition: opacity .18s ease;
+}
+
+.cpf.is-loading,
+.cpf-people-results.is-loading {
+    opacity: .45;
+    pointer-events: none;
+}
+
+.cpf.is-loading {
+    cursor: progress;
+}
+
+.cpf-people-results {
+    position: relative;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cpf,
+    .cpf-people-results,
+    .cpf__submit,
+    .cpf__reset,
+    .cpf__letter {
+        transition: none;
+    }
+}

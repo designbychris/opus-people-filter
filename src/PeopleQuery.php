@@ -24,7 +24,6 @@ final class PeopleQuery
         'staffmember_roles',
         'staffmember_specialisms',
         'staffmember_sectors',
-        'accreditations',
     ];
 
     public function register(): void
