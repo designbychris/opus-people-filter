@@ -138,3 +138,12 @@ Client data-mapping update:
   - single-column filters on mobile
   - wrapped A-Z controls for smaller screens
 - Adds reduced-motion support.
+
+
+## 0.1.5 — Loading Status Placement
+
+- Moves the visible “Updating results…” indicator beneath the filter controls.
+- Prevents the loading state from overlapping or visually competing with the Search button.
+- Keeps the loading state full-width and aligned neatly on desktop.
+- Centers the loading state on mobile.
+- No query or AJAX behavior changes.

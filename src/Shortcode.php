@@ -49,10 +49,6 @@ final class Shortcode
         ob_start();
         ?>
         <section class="cpf" data-cpf-filter>
-            <div class="cpf__loading" data-cpf-loading hidden aria-hidden="true">
-                <span class="cpf__spinner" aria-hidden="true"></span>
-                <span class="cpf__loading-text"><?php esc_html_e('Updating results…', 'client-people-filter'); ?></span>
-            </div>
             <form class="cpf__form" method="get" action="<?php echo esc_url($this->currentUrlWithoutQuery()); ?>">
                 <input type="hidden" name="people_filter" value="1">
 
@@ -111,6 +107,11 @@ final class Shortcode
                     >
                         <?php echo esc_html($atts['reset_label']); ?>
                     </a>
+                </div>
+
+                <div class="cpf__loading-row" data-cpf-loading hidden aria-hidden="true">
+                    <span class="cpf__spinner" aria-hidden="true"></span>
+                    <span class="cpf__loading-text"><?php esc_html_e('Updating results…', 'client-people-filter'); ?></span>
                 </div>
             </form>
 
