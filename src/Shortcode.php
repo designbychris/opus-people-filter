@@ -35,6 +35,11 @@ final class Shortcode
                 'submit_label'       => __('Search', 'client-people-filter'),
                 'reset_label'        => __('Reset', 'client-people-filter'),
                 'intro_text'         => __('Search by name or choose a filter to find a member of our team.', 'client-people-filter'),
+                'exclude_divisions'   => '',
+                'exclude_locations'   => '',
+                'exclude_roles'       => '',
+                'exclude_specialisms' => '',
+                'exclude_sectors'     => '',
             ],
             is_array($atts) ? $atts : [],
             'people_filter'
@@ -45,6 +50,7 @@ final class Shortcode
 
         $taxonomies = $this->csv($atts['taxonomies']);
         $labels     = $this->csv($atts['labels']);
+        $exclusions = $this->exclusions($atts);
 
         ob_start();
         ?>
@@ -86,7 +92,11 @@ final class Shortcode
                             }
 
                             $label = $labels[$index] ?? $this->taxonomyLabel($taxonomy);
-                            $this->renderTaxonomySelect($taxonomy, $label);
+                            $this->renderTaxonomySelect(
+                                $taxonomy,
+                                $label,
+                                $exclusions[$taxonomy] ?? []
+                            );
                             ?>
                         <?php endforeach; ?>
                     </div>
@@ -161,14 +171,35 @@ final class Shortcode
         <?php
     }
 
-    private function renderTaxonomySelect(string $taxonomy, string $label): void
-    {
-        $terms = get_terms(
-            [
-                'taxonomy'   => $taxonomy,
-                'hide_empty' => true,
-            ]
-        );
+    /**
+     * @param string[] $excludedSlugs
+     */
+    private function renderTaxonomySelect(
+        string $taxonomy,
+        string $label,
+        array $excludedSlugs = []
+    ): void {
+        $args = [
+            'taxonomy'   => $taxonomy,
+            'hide_empty' => true,
+        ];
+
+        if ($excludedSlugs !== []) {
+            $excludedTermIds = get_terms(
+                [
+                    'taxonomy'   => $taxonomy,
+                    'hide_empty' => false,
+                    'slug'       => $excludedSlugs,
+                    'fields'     => 'ids',
+                ]
+            );
+
+            if (!is_wp_error($excludedTermIds) && $excludedTermIds !== []) {
+                $args['exclude'] = array_map('intval', $excludedTermIds);
+            }
+        }
+
+        $terms = get_terms($args);
 
         if (is_wp_error($terms) || $terms === []) {
             return;
@@ -201,6 +232,38 @@ final class Shortcode
             </select>
         </label>
         <?php
+    }
+
+    /**
+     * Map friendly shortcode exclusion attributes to the site's real
+     * taxonomy slugs.
+     *
+     * @param array<string,mixed> $atts
+     * @return array<string,string[]>
+     */
+    private function exclusions(array $atts): array
+    {
+        $map = [
+            'exclude_divisions'   => 'staffmember_divisions',
+            'exclude_locations'   => 'staffmember_locations',
+            'exclude_roles'       => 'staffmember_roles',
+            'exclude_specialisms' => 'staffmember_specialisms',
+            'exclude_sectors'     => 'staffmember_sectors',
+        ];
+
+        $exclusions = [];
+
+        foreach ($map as $attribute => $taxonomy) {
+            $value = isset($atts[$attribute]) ? (string) $atts[$attribute] : '';
+            $slugs = array_map('sanitize_title', $this->csv($value));
+            $slugs = array_values(array_unique(array_filter($slugs)));
+
+            if ($slugs !== []) {
+                $exclusions[$taxonomy] = $slugs;
+            }
+        }
+
+        return $exclusions;
     }
 
     private function taxonomyLabel(string $taxonomy): string

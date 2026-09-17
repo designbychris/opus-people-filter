@@ -147,3 +147,27 @@ Client data-mapping update:
 - Keeps the loading state full-width and aligned neatly on desktop.
 - Centers the loading state on mobile.
 - No query or AJAX behavior changes.
+
+
+## 0.1.6 — Selective Filter Terms
+
+Individual taxonomy terms can now be hidden from the public dropdowns directly
+from the shortcode. Exclusions use **term slugs** and accept comma-separated
+values.
+
+```text
+[people_filter
+    exclude_divisions="internal-services"
+    exclude_locations="old-office,internal-office"
+    exclude_roles="former-partner"
+    exclude_specialisms="internal-only"
+    exclude_sectors="legacy-sector"
+]
+```
+
+Available attributes are `exclude_divisions`, `exclude_locations`,
+`exclude_roles`, `exclude_specialisms`, and `exclude_sectors`.
+
+All are optional. `[people_filter]` continues to show all non-empty terms by
+default. Excluding a term only removes it from the public dropdown; it does not
+change the taxonomy term or any staff assignments in WordPress.
